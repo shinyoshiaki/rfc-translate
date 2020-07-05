@@ -488,26 +488,26 @@ IANAは、この仕様に対応するために、「EXTRACTOR-dtls_srtp」値を
 
 各DTLSアソシエーションは、次に示すように、ピアが相互に認証し、アルゴリズム、モード、およびその他のパラメータをネゴシエートし、共有キー情報を確立するハンドシェイク交換（以下に示す）から始まります. 信頼できないトランスポートをサポートするために、各サイドは再送信タイマーを維持して、これらのメッセージの信頼できる配信を提供します. ハンドシェイクが完了すると、暗号化されたデータが送信されます. 
 
-クライアントサーバー
+         Client                                               Server
 
-         ClientHello -------->
+         ClientHello                  -------->
                                                          ServerHello
-                                                        証明書*
-                                                  ServerKeyExchange *
-                                                 CertificateRequest *
-                                      <-------- ServerHelloDone
-         証明書*
+                                                        Certificate*
+                                                  ServerKeyExchange*
+                                                 CertificateRequest*
+                                      <--------      ServerHelloDone
+         Certificate*
          ClientKeyExchange
-         CertificateVerify *
+         CertificateVerify*
          [ChangeCipherSpec]
-         完成-------->
+         Finished                     -------->
                                                   [ChangeCipherSpec]
-                                      <--------終了
-         アプリケーションデータ<------->アプリケーションデータ
-        
-「*」は、常に送信されるわけではないメッセージを示します. 
+                                      <--------             Finished
+         Application Data             <------->     Application Data
 
-図5：基本的なDTLSハンドシェイク交換（[RFC4347]以降）. 
+               '*' indicates messages that are not always sent.
+
+        Figure 5: Basic DTLS Handshake Exchange (after [RFC4347]).
 
 アプリケーションデータは、一連のDTLS「レコード」として送信されることにより保護されます. これらのレコードは独立しており、紛失や再注文があった場合でも正しく処理できます. DTLS-SRTPでは、このレコードプロトコルはSRTPに置き換えられます[RFC3711]
 
@@ -523,53 +523,56 @@ RTPセキュリティのコンテキストにおけるこの戦略のオーバ�
    すべてが並行して行われますが、セッションを利用するために
    最初のチャンネルが終わった後に再開する必要があります
    設立. 2つのチャネルの場合、これはラダー図を提供します
-   このようなもの（括弧内の数字はメディアチャネル番号です）アリスボブ
+   このようなもの（括弧内の数字はメディアチャネル番号です）   
+   
+   Alice                                   Bob
    -------------------------------------------
-                      <-ClientHello（1）
-   ServerHello（1）->
-   証明書（1）
-   ServerHelloDone（1）
-                      <-ClientKeyExchange（1）
-                          ChangeCipherSpec（1）
-                                  完成（1）
-   ChangeCipherSpec（1）->
-   終了（1）->
-                                                <---チャネル1準備完了
-        
-                      <-ClientHello（2）
-   ServerHello（2）->
-   ChangeCipherSpec（2）->
-   終了（2）->
-                      <-ChangeCipherSpec（2）
-                                  完成（2）
-                                                <---チャネル2準備完了
-        
-図6：並列DTLS-SRTPネゴシエーション. 
+                      <-       ClientHello (1)
+   ServerHello (1)    ->
+   Certificate (1)
+   ServerHelloDone (1)
+                      <- ClientKeyExchange (1)
+                          ChangeCipherSpec (1)
+                                  Finished (1)
+   ChangeCipherSpec (1)->
+   Finished         (1)->
+                                                <--- Channel 1 ready
+
+                      <-       ClientHello (2)
+   ServerHello (2)    ->
+   ChangeCipherSpec(2)->
+   Finished(2)        ->
+                      <-  ChangeCipherSpec (2)
+                                  Finished (2)
+                                                <--- Channel 2 ready
+
+                Figure 6: Parallel DTLS-SRTP negotiations.
 
    したがって、チャネル1の後に1 RTT（往復時間）が追加されます. 
    チャネル2の準備が整う前に準備ができています. ピアが潜在的に
    再開を見越して、彼らは握手のようなインターレースをすることができます
-   そう：アリスボブ
+
+   Alice                                   Bob
    -------------------------------------------
-                      <-ClientHello（1）
-   ServerHello（1）->
-   証明書（1）
-   ServerHelloDone（1）
-                      <-ClientKeyExchange（1）
-                          ChangeCipherSpec（1）
-                                  完成（1）
-                      <-ClientHello（2）
-   ChangeCipherSpec（1）->
-   終了（1）->
-                                                <---チャネル1準備完了
-   ServerHello（2）->
-   ChangeCipherSpec（2）->
-   終了（2）->
-                      <-ChangeCipherSpec（2）
-                                  完成（2）
-                                                <---チャネル2準備完了
-        
-図7：インターレースDTLS-SRTPネゴシエーション. 
+                      <-       ClientHello (1)
+   ServerHello (1)    ->
+   Certificate (1)
+   ServerHelloDone (1)
+                      <- ClientKeyExchange (1)
+                          ChangeCipherSpec (1)
+                                  Finished (1)
+                      <-       ClientHello (2)
+   ChangeCipherSpec (1)->
+   Finished         (1)->
+                                                <--- Channel 1 ready
+   ServerHello (2)    ->
+   ChangeCipherSpec(2)->
+   Finished(2)        ->
+                      <-  ChangeCipherSpec (2)
+                                  Finished (2)
+                                                <--- Channel 2 ready
+
+               Figure 7: Interlaced DTLS-SRTP negotiations.
 
 この場合、チャネルは同時に準備ができていますが、ハンドシェイク（1）のメッセージが失われた場合、ハンドシェイク（2）は完全な再ハンドシェイクを必要とするか、アリスが賢く、最初のハンドシェイクが完了するまで再開試行をキューに入れます. ボブは再送信するため、パケットをドロップするだけでも機能することに注意してください. 
 
