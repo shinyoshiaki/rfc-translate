@@ -148,14 +148,14 @@ DTLS-SRTPハンドシェイクは、1つ以上のSRTP暗号コンテキストを
 4.1.1. use_srtp拡張定義
 クライアントは、「use_srtp」拡張のextension_dataフィールドにUseSRTPData値を入力する必要があります（登録についてはセクション9を参照）：
 
-uint8 SRTPProtectionProfile [2];
+      uint8 SRTPProtectionProfile[2];
 
       struct {
          SRTPProtectionProfiles SRTPProtectionProfiles;
          opaque srtp_mki<0..255>;
       } UseSRTPData;
-        
-      SRTPProtectionProfile SRTPProtectionProfiles <2..2 ^ 16-1>;
+
+      SRTPProtectionProfile SRTPProtectionProfiles<2..2^16-1>;
         
 SRTPProtectionProfilesリストは、クライアントがサポートしようとするSRTP保護プロファイルを、優先度の高い順に示しています. srtp_mki値には、クライアントがSRTPパケットに使用するSRTPマスターキー識別子（MKI）値（存在する場合）が含まれています. このフィールドの長さがゼロの場合、MKIは使用されません. 
 
