@@ -1,3 +1,148 @@
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   5
+   2.  Overview of ICE . . . . . . . . . . . . . . . . . . . . . . .   6
+     2.1.  Gathering Candidates  . . . . . . . . . . . . . . . . . .   8
+     2.2.  Connectivity Checks . . . . . . . . . . . . . . . . . . .  10
+     2.3.  Nominating Candidate Pairs and Concluding ICE . . . . . .  12
+     2.4.  ICE Restart . . . . . . . . . . . . . . . . . . . . . . .  13
+     2.5.  Lite Implementations  . . . . . . . . . . . . . . . . . .  13
+   3.  ICE Usage . . . . . . . . . . . . . . . . . . . . . . . . . .  13
+   4.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .  13
+   5.  ICE Candidate Gathering and Exchange  . . . . . . . . . . . .  17
+     5.1.  Full Implementation . . . . . . . . . . . . . . . . . . .  17
+       5.1.1.  Gathering Candidates  . . . . . . . . . . . . . . . .  18
+         5.1.1.1.  Host Candidates . . . . . . . . . . . . . . . . .  18
+         5.1.1.2.  Server-Reflexive and Relayed Candidates . . . . .  20
+         5.1.1.3.  Computing Foundations . . . . . . . . . . . . . .  21
+         5.1.1.4.  Keeping Candidates Alive  . . . . . . . . . . . .  21
+       5.1.2.  Prioritizing Candidates . . . . . . . . . . . . . . .  22
+         5.1.2.1.  Recommended Formula . . . . . . . . . . . . . . .  22
+         5.1.2.2.  Guidelines for Choosing Type and Local
+                   Preferences . . . . . . . . . . . . . . . . . . .  23
+       5.1.3.  Eliminating Redundant Candidates  . . . . . . . . . .  23
+     5.2.  Lite Implementation Procedures  . . . . . . . . . . . . .  23
+     5.3.  Exchanging Candidate Information  . . . . . . . . . . . .  24
+     5.4.  ICE Mismatch  . . . . . . . . . . . . . . . . . . . . . .  26
+   6.  ICE Candidate Processing  . . . . . . . . . . . . . . . . . .  26
+     6.1.  Procedures for Full Implementation  . . . . . . . . . . .  26
+       6.1.1.  Determining Role  . . . . . . . . . . . . . . . . . .  26
+       6.1.2.  Forming the Checklists  . . . . . . . . . . . . . . .  28
+         6.1.2.1.  Checklist State . . . . . . . . . . . . . . . . .  28
+         6.1.2.2.  Forming Candidate Pairs . . . . . . . . . . . . .  28
+         6.1.2.3.  Computing Pair Priority and Ordering Pairs  . . .  31
+         6.1.2.4.  Pruning the Pairs . . . . . . . . . . . . . . . .  31
+         6.1.2.5.  Removing Lower-Priority Pairs . . . . . . . . . .  31
+         6.1.2.6.  Computing Candidate Pair States . . . . . . . . .  32
+       6.1.3.  ICE State . . . . . . . . . . . . . . . . . . . . . .  36
+       6.1.4.  Scheduling Checks . . . . . . . . . . . . . . . . . .  36
+         6.1.4.1.  Triggered-Check Queue . . . . . . . . . . . . . .  36
+         6.1.4.2.  Performing Connectivity Checks  . . . . . . . . .  36
+     6.2.  Lite Implementation Procedures  . . . . . . . . . . . . .  38
+   7.  Performing Connectivity Checks  . . . . . . . . . . . . . . .  38
+     7.1.  STUN Extensions . . . . . . . . . . . . . . . . . . . . .  38
+       7.1.1.  PRIORITY  . . . . . . . . . . . . . . . . . . . . . .  38
+       7.1.2.  USE-CANDIDATE . . . . . . . . . . . . . . . . . . . .  38
+       7.1.3.  ICE-CONTROLLED and ICE-CONTROLLING  . . . . . . . . .  39
+     7.2.  STUN Client Procedures  . . . . . . . . . . . . . . . . .  39
+       7.2.1.  Creating Permissions for Relayed Candidates . . . . .  39
+       7.2.2.  Forming Credentials . . . . . . . . . . . . . . . . .  39
+       7.2.3.  Diffserv Treatment  . . . . . . . . . . . . . . . . .  40
+       7.2.4.  Sending the Request . . . . . . . . . . . . . . . . .  40
+       7.2.5.  Processing the Response . . . . . . . . . . . . . . .  40
+         7.2.5.1.  Role Conflict . . . . . . . . . . . . . . . . . .  40
+         7.2.5.2.  Failure . . . . . . . . . . . . . . . . . . . . .  41
+           7.2.5.2.1.  Non-Symmetric Transport Addresses . . . . . .  41
+           7.2.5.2.2.  ICMP Error  . . . . . . . . . . . . . . . . .  41
+           7.2.5.2.3.  Timeout . . . . . . . . . . . . . . . . . . .  41
+           7.2.5.2.4.  Unrecoverable STUN Response . . . . . . . . .  41
+         7.2.5.3.  Success . . . . . . . . . . . . . . . . . . . . .  42
+           7.2.5.3.1.  Discovering Peer-Reflexive Candidates . . . .  42
+           7.2.5.3.2.  Constructing a Valid Pair . . . . . . . . . .  43
+           7.2.5.3.3.  Updating Candidate Pair States  . . . . . . .  44
+           7.2.5.3.4.  Updating the Nominated Flag . . . . . . . . .  44
+         7.2.5.4.  Checklist State Updates . . . . . . . . . . . . .  44
+     7.3.  STUN Server Procedures  . . . . . . . . . . . . . . . . .  45
+       7.3.1.  Additional Procedures for Full Implementations  . . .  45
+         7.3.1.1.  Detecting and Repairing Role Conflicts  . . . . .  46
+         7.3.1.2.  Computing Mapped Addresses  . . . . . . . . . . .  47
+         7.3.1.3.  Learning Peer-Reflexive Candidates  . . . . . . .  47
+         7.3.1.4.  Triggered Checks  . . . . . . . . . . . . . . . .  47
+         7.3.1.5.  Updating the Nominated Flag . . . . . . . . . . .  49
+       7.3.2.  Additional Procedures for Lite Implementations  . . .  49
+   8.  Concluding ICE Processing . . . . . . . . . . . . . . . . . .  50
+     8.1.  Procedures for Full Implementations . . . . . . . . . . .  50
+       8.1.1.  Nominating Pairs  . . . . . . . . . . . . . . . . . .  50
+       8.1.2.  Updating Checklist and ICE States . . . . . . . . . .  51
+     8.2.  Procedures for Lite Implementations . . . . . . . . . . .  52
+     8.3.  Freeing Candidates  . . . . . . . . . . . . . . . . . . .  53
+       8.3.1.  Full Implementation Procedures  . . . . . . . . . . .  53
+       8.3.2.  Lite Implementation Procedures  . . . . . . . . . . .  53
+   9.  ICE Restarts  . . . . . . . . . . . . . . . . . . . . . . . .  53
+   10. ICE Option  . . . . . . . . . . . . . . . . . . . . . . . . .  54
+   11. Keepalives  . . . . . . . . . . . . . . . . . . . . . . . . .  54
+   12. Data Handling . . . . . . . . . . . . . . . . . . . . . . . .  55
+     12.1.  Sending Data . . . . . . . . . . . . . . . . . . . . . .  55
+       12.1.1.  Procedures for Lite Implementations  . . . . . . . .  56
+     12.2.  Receiving Data . . . . . . . . . . . . . . . . . . . . .  56
+   13. Extensibility Considerations  . . . . . . . . . . . . . . . .  57
+   14. Setting Ta and RTO  . . . . . . . . . . . . . . . . . . . . .  57
+     14.1.  General  . . . . . . . . . . . . . . . . . . . . . . . .  57
+     14.2.  Ta . . . . . . . . . . . . . . . . . . . . . . . . . . .  58
+     14.3.  RTO  . . . . . . . . . . . . . . . . . . . . . . . . . .  58
+   15. Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .  59
+     15.1.  Example with IPv4 Addresses  . . . . . . . . . . . . . .  60
+     15.2.  Example with IPv6 Addresses  . . . . . . . . . . . . . .  65
+   16. STUN Extensions . . . . . . . . . . . . . . . . . . . . . . .  69
+     16.1.  Attributes . . . . . . . . . . . . . . . . . . . . . . .  69
+     16.2.  New Error-Response Codes . . . . . . . . . . . . . . . .  70
+   17. Operational Considerations  . . . . . . . . . . . . . . . . .  70
+     17.1.  NAT and Firewall Types . . . . . . . . . . . . . . . . .  70
+     17.2.  Bandwidth Requirements . . . . . . . . . . . . . . . . .  70
+       17.2.1.  STUN and TURN Server-Capacity Planning . . . . . . .  71
+       17.2.2.  Gathering and Connectivity Checks  . . . . . . . . .  71
+       17.2.3.  Keepalives . . . . . . . . . . . . . . . . . . . . .  72
+     17.3.  ICE and ICE-Lite . . . . . . . . . . . . . . . . . . . .  72
+     17.4.  Troubleshooting and Performance Management . . . . . . .  72
+     17.5.  Endpoint Configuration . . . . . . . . . . . . . . . . .  73
+   18. IAB Considerations  . . . . . . . . . . . . . . . . . . . . .  73
+     18.1.  Problem Definition . . . . . . . . . . . . . . . . . . .  73
+     18.2.  Exit Strategy  . . . . . . . . . . . . . . . . . . . . .  74
+     18.3.  Brittleness Introduced by ICE  . . . . . . . . . . . . .  74
+     18.4.  Requirements for a Long-Term Solution  . . . . . . . . .  75
+     18.5.  Issues with Existing NAPT Boxes  . . . . . . . . . . . .  75
+   19. Security Considerations . . . . . . . . . . . . . . . . . . .  76
+     19.1.  IP Address Privacy . . . . . . . . . . . . . . . . . . .  76
+     19.2.  Attacks on Connectivity Checks . . . . . . . . . . . . .  77
+     19.3.  Attacks on Server-Reflexive Address Gathering  . . . . .  80
+     19.4.  Attacks on Relayed Candidate Gathering . . . . . . . . .  80
+     19.5.  Insider Attacks  . . . . . . . . . . . . . . . . . . . .  81
+       19.5.1.  STUN Amplification Attack  . . . . . . . . . . . . .  81
+   20. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  82
+     20.1.  STUN Attributes  . . . . . . . . . . . . . . . . . . . .  82
+     20.2.  STUN Error Responses . . . . . . . . . . . . . . . . . .  82
+     20.3.  ICE Options  . . . . . . . . . . . . . . . . . . . . . .  82
+   21. Changes from RFC 5245 . . . . . . . . . . . . . . . . . . . .  83
+   22. References  . . . . . . . . . . . . . . . . . . . . . . . . .  84
+     22.1.  Normative References . . . . . . . . . . . . . . . . . .  84
+     22.2.  Informative References . . . . . . . . . . . . . . . . .  85
+   Appendix A.  Lite and Full Implementations  . . . . . . . . . . .  89
+   Appendix B.  Design Motivations . . . . . . . . . . . . . . . . .  90
+     B.1.  Pacing of STUN Transactions . . . . . . . . . . . . . . .  90
+     B.2.  Candidates with Multiple Bases  . . . . . . . . . . . . .  92
+     B.3.  Purpose of the Related-Address and Related-Port
+           Attributes  . . . . . . . . . . . . . . . . . . . . . . .  94
+     B.4.  Importance of the STUN Username . . . . . . . . . . . . .  95
+     B.5.  The Candidate Pair Priority Formula . . . . . . . . . . .  96
+     B.6.  Why Are Keepalives Needed?  . . . . . . . . . . . . . . .  96
+     B.7.  Why Prefer Peer-Reflexive Candidates? . . . . . . . . . .  97
+     B.8.  Why Are Binding Indications Used for Keepalives?  . . . .  97
+     B.9.  Selecting Candidate Type Preference . . . . . . . . . . .  97
+   Appendix C.  Connectivity-Check Bandwidth . . . . . . . . . . . .  99
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . . 100
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . 100
+
+
 1.はじめに 
 
 ピア間で通信セッションを確立するプロトコルには、通常、データソースとシンクのIPアドレスとポートの交換が含まれます.ただし、これは、ネットワークアドレス変換器（NAT）[RFC3235]を介して操作する場合に課題をもたらします.これらのプロトコルは、参加者間で直接データフローを作成しようとするため、参加者間のアプリケーション層の仲介はありません.これは、データ遅延を減らし、パケット損失を減らし、アプリケーションを展開する運用コストを削減するために行われます.ただし、NATを使用してこれを達成することは困難です.この理由の完全な取り扱いは、この仕様の範囲外です.
