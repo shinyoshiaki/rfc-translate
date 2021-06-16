@@ -44,8 +44,8 @@ Copyright（c）2012 IETF Trustおよびドキュメントの作成者として�
       3.1. 再構成チャンク................................................................ 5
    4.新しいパラメータタイプ............................................................. 6
       4.1. outgoingSSNリセット要求パラメータ................................. 7
-      4.2. incomingSSNリセット要求パラメーター....................... 8
-      4.3. SSN / TSNリセット要求パラメーター............................ 9
+      4.2. incomingSSNリセットrequest parameter....................... 8
+      4.3. SSN / TSNリセットrequest parameter............................ 9
       4.4. Re-configuration Responseパラメータ................................. 10
       4.5. outgoing streamリクエストパラメータの追加.................... 12
       4.6 incoming streamリクエストパラメータの追加..................... 13
@@ -69,7 +69,7 @@ Copyright（c）2012 IETF Trustおよびドキュメントの作成者として�
            5.2.2. outgoingのための受信側の手順
                   SSNリセット要求パラメータ........................ 19
            5.2.3. 受信側の受信側手順
-                  SSNリセット要求パラメーター........................ 20
+                  SSNリセットrequest parameter........................ 20
            5.2.4. SSN / TSNの受信側の手順
                   リクエストパラメータのリセット............................ 21
            5.2.5. 追加の受信側の手順
@@ -152,13 +152,13 @@ RE-CONFIGチャンクの形式では、理解されていないチャンクを�
 
 各RE-CONFIGチャンクは、少なくとも1つのパラメーターと最大2つのパラメーターを保持することに注意してください. 次の組み合わせのみが許可されています. 
 
-1.outgoingSSNリセット要求パラメーター. 
+1.outgoingSSNリセットrequest parameter. 
 
-2.incomingSSNリセット要求パラメーター. 
+2.incomingSSNリセットrequest parameter. 
 
-3.outgoingSSNリセット要求パラメーター、incomingSSNリセット要求パラメーター. 
+3.outgoingSSNリセットrequest parameter、incomingSSNリセットrequest parameter. 
 
-4. SSN / TSNリセット要求パラメーター. 
+4. SSN / TSNリセットrequest parameter. 
 
 5.outgoing streamリクエストパラメータを追加します. 
 
@@ -168,7 +168,7 @@ RE-CONFIGチャンクの形式では、理解されていないチャンクを�
 
 8.Re-configuration Responseパラメーター. 
 
-9.Re-configuration Responseパラメーター、outgoingSSNリセット要求パラメーター. 
+9.Re-configuration Responseパラメーター、outgoingSSNリセットrequest parameter. 
 
 10.Re-configuration Responseパラメーター、Re-configuration Responseパラメーター. 
 
@@ -194,7 +194,7 @@ RE-CONFIGチャンクの形式では、理解されていないチャンクを�
 
 転送されるすべての整数は、「ネットワークバイトオーダー」、つまりビッグエンディアンになっています. 
 
-4.1. outgoingSSNリセット要求パラメーター
+4.1. outgoingSSNリセットrequest parameter
 このパラメーターは、送信者が一部またはすべてのoutgoing streamのリセットを要求するために使用されます. 
 
     0                   1                   2                   3
@@ -221,7 +221,7 @@ RE-CONFIGチャンクの形式では、理解されていないチャンクを�
 
 re-configuration requestシーケンス番号：4バイト（符号なし整数）このフィールドは、要求を識別するために使用されます. これは、初期TSNと同じ値に初期化される単調に増加する数です. これは、新しいre-configuration requestパラメーターを送信するたびに1ずつ増加します. 
 
-Re-configuration Responseシーケンス番号：4バイト（符号なし整数）このoutgoingSSNリセット要求パラメーターがincomingSSNリセット要求パラメーターに応答して送信される場合、このパラメーターはincoming要求に対する暗黙の応答でもあります. このフィールドは、incoming要求のre-configuration requestシーケンス番号を保持します. 他の場合では、次に予想されるre-configuration requestシーケンス番号から1を引いた値が保持されます. 
+Re-configuration Responseシーケンス番号：4バイト（符号なし整数）このoutgoingSSNリセットrequest parameterがincomingSSNリセットrequest parameterに応答して送信される場合、このパラメーターはincoming要求に対する暗黙の応答でもあります. このフィールドは、incoming要求のre-configuration requestシーケンス番号を保持します. 他の場合では、次に予想されるre-configuration requestシーケンス番号から1を引いた値が保持されます. 
 
 送信者の最後に割り当てられたTSN：4バイト（符号なし整数）この値は、次のTSN-1を保持します. つまり、この送信者が割り当てた最後のTSNです. 
 
@@ -229,7 +229,7 @@ Re-configuration Responseシーケンス番号：4バイト（符号なし整数
 
 このパラメーターは、R​​E-CONFIGチャンクに含めることができます. このパラメーターは、他のチャンクタイプでは使用できません. 
 
-4.2. incomingSSNリセット要求パラメーター
+4.2. incomingSSNリセットrequest parameter
 このパラメーターは、ピアがoutgoing streamの一部またはすべてをリセットすることを要求するために送信者が使用します. 
 
     0                   1                   2                   3
@@ -256,7 +256,7 @@ re-configuration requestシーケンス番号：4バイト（符号なし整数�
 
 このパラメーターは、R​​E-CONFIGチャンクに含めることができます. このパラメーターは、他のチャンクタイプでは使用できません. 
 
-4.3. SSN / TSNリセット要求パラメーター
+4.3. SSN / TSNリセットrequest parameter
 このパラメーターは、すべてのincomingおよびoutgoing streamのTSNおよびSSN番号付けのリセットを要求するために送信者によって使用されます. 
 
     0                   1                   2                   3
@@ -267,7 +267,7 @@ re-configuration requestシーケンス番号：4バイト（符号なし整数�
    |         Re-configuration Request Sequence Number              |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
         
-パラメータータイプ：2バイト（符号なし整数）このフィールドには、SSN / TSNリセット要求パラメーターのIANA定義パラメータータイプが保持されます. このフィールドの値は15です. 
+パラメータータイプ：2バイト（符号なし整数）このフィールドには、SSN / TSNリセットrequest parameterのIANA定義パラメータータイプが保持されます. このフィールドの値は15です. 
 
 パラメーターの長さ：2バイト（符号なし整数）このフィールドには、パラメーターの長さがバイト単位で保持されます. 値は8でなければなりません. 
 
@@ -296,7 +296,7 @@ re-configuration requestシーケンス番号：4バイト（符号なし整数�
 
 パラメータタイプの長さ：2バイト（符号なし整数）このフィールドには、パラメータの長さがバイト単位で保持されます. オプションのフィールドが存在しない場合、値は12でなければならず、それ以外の場合は20でなければなりません. 
 
-Re-configuration Responseシーケンス番号：4バイト（符号なし整数）この値は要求パラメーターからコピーされ、要求に応答を結び付けるためにRe-configuration Responseパラメーターの受信者によって使用されます. 
+Re-configuration Responseシーケンス番号：4バイト（符号なし整数）この値はrequest parameterからコピーされ、要求に応答を結び付けるためにRe-configuration Responseパラメーターの受信者によって使用されます. 
 
 結果：4バイト（符号なし整数）この値は、要求の処理の結果を示します. 表3に示すようにエンコードされます. 
 
@@ -385,48 +385,48 @@ SCTPストリームについて覚えておくべき重要なことの1つは、
 
 この拡張をサポートするSCTPエンドポイントは、INITまたはINIT-ACKのいずれかのサポートされる拡張パラメーターにRE-CONFIGチャンクのチャンクタイプを含める必要があります. 再構成チャンクを送信する前に、送信者は、ピアが再構成拡張のサポートをアドバタイズしたことを確認する必要があります. RE-CONFIGチャンクのチャンクタイプが、サポートされている拡張機能のチャンクのリストに表示されない場合、送信者はre-configuration requestをピアに送信してはならず（MUST）、アプリケーションによるそのようなサービスの要求は次のように応答する必要があります（SHOULD）. ピアSCTPスタックが再構成拡張をサポートしていないことを示す適切なエラー. 
 
-常に、複数のリクエストが処理中であってはなりません. したがって、Re-configuration Timerが実行中で、RE-CONFIGチャンクに少なくとも1つの要求パラメーターが含まれている場合は、チャンクをバッファーに入れなければなりません（MUST）. 
+常に、複数のリクエストが処理中であってはなりません. したがって、Re-configuration Timerが実行中で、RE-CONFIGチャンクに少なくとも1つのrequest parameterが含まれている場合は、チャンクをバッファーに入れなければなりません（MUST）. 
 
-RE-CONFIGチャンクをパッケージ化してピアに送信した後、RE-CONFIGチャンクに少なくとも1つの要求パラメーターが含まれている場合、送信者はRe-configuration Timerを開始する必要があります. 要求パラメーターが含まれていない場合、Re-configuration Timerを開始してはなりません. このタイマーは、SCTPのデータ送信タイマー（つまり、再送信タイムアウト（RTO）タイマー）と同じ値を使用しなければならず（MUST）、指数バックオフを使用しなければならず、有効期限ごとに値を倍にしなければなりません. タイマーが期限切れになった場合、値を2倍にすることに加えて、送信者はRE-CONFIGチャンクを再送信し、適切なエラーカウントを増やし（関連付けと宛先の両方）、しきい値管理を実行する必要があります. SCTP再送信のしきい値を超えた場合、関連付けを破棄する可能性があります.  . 
+RE-CONFIGチャンクをパッケージ化して相手に送信した後、RE-CONFIGチャンクに少なくとも1つのリクエストパラメータが含まれていれば、送信者は再設定タイマーを開始しなければならない(MUST)。 RE-CONFIGチャンクにリクエストパラメータが含まれていない場合は、再設定タイマーを開始してはならない(MUST NOT)。 このタイマは、SCTPのデータ送信タイマ（すなわち、再送タイムアウト（RTO）タイマ）と同じ値を使用しなければならず（MUST）、指数的バックオフを使用して、満了するたびに値を2倍にしなければならない（MUST）。 タイマーが期限切れになると、値が2倍になるだけでなく、送信者はRE-CONFIGチャンクを再送し、(アソシエーションとデスティネーションの両方の)適切なエラーカウントを増加させ、閾値管理を実行しなければならない(SCTPの再送閾値を超えた場合はアソシエーションを破壊する可能性がある)。
 
 5.1.2. Outgoing SSN Reset Request Parameterの送信側の手順
 
-SCTP送信者が一部またはすべてのoutgoing streamのSSNをリセットする場合、Re-configuration Timerが実行されていなければ、outgoingSSNリセット要求パラメーターを送信できます. 次の手順に従う必要があります. 
+SCTP送信者が一部またはすべてのoutgoing streamのSSNをリセットする場合、Re-configuration Timerが実行されていなければ、outgoingSSNリセットrequest parameterを送信できます. 次の手順に従う必要があります. 
 
 A1：送信者は、影響を受けるストリームに対して上位層によって提供される新しいユーザーデータへの新しいSSNの割り当てを停止し、それをキューに入れる必要があります. これは、リクエストの受信者がリクエストを受け入れるか拒否するかがわからないためです. さらに、要求が失われると、レシーバーがまだ処理する準備ができていないストリームでシーケンス外エラーが発生する可能性があります. 
 
-A2：送信者は次のre-configuration requestシーケンス番号を割り当てなければならず（MUST）、それをoutgoingSSNリセット要求パラメーターのre-configuration requestシーケンス番号フィールドに入れなければなりません（MUST）. 次に、次のre-configuration requestシーケンス番号を1ずつ増やす必要があります. 
+A2：送信者は次のre-configuration requestシーケンス番号を割り当てなければならず（MUST）、それをoutgoingSSNリセットrequest parameterのre-configuration requestシーケンス番号フィールドに入れなければなりません（MUST）. 次に、次のre-configuration requestシーケンス番号を1ずつ増やす必要があります. 
 
 A3：送信者の最後に割り当てられたTSNは、送信者が割り当てた次のTSNから1を引いた値に設定する必要があります. 
 
-A4：このOutgoing SSN Reset Request ParameterがIncoming SSN Reset Request Parameterに応答して送信される場合、ストリーム番号をIncoming SSN Reset Request ParameterからOutgoing SSN Reset Request Parameterにコピーする必要があります. outgoingSSNリセット要求パラメーターのRe-configuration Responseシーケンス番号は、incomingSSNリセット要求パラメーターのre-configuration requestシーケンス番号でなければなりません. このOutgoing SSN Reset Request Parameterが上位層の要求で送信され、送信者がすべての送信ストリームのリセットを要求する場合、ストリーム番号はOutgoing SSN Reset Request Parameterに入れるべきではありません（SHOULD NOT）. 送信者が一部のoutgoing streamのみをリセットすることを要求する場合、これらのストリーム番号をoutgoingSSNリセット要求パラメーターに配置する必要があります. 
+A4：このOutgoing SSN Reset Request ParameterがIncoming SSN Reset Request Parameterに応答して送信される場合、ストリーム番号をIncoming SSN Reset Request ParameterからOutgoing SSN Reset Request Parameterにコピーする必要があります. outgoingSSNリセットrequest parameterのRe-configuration Responseシーケンス番号は、incomingSSNリセットrequest parameterのre-configuration requestシーケンス番号でなければなりません. このOutgoing SSN Reset Request Parameterが上位層の要求で送信され、送信者がすべての送信ストリームのリセットを要求する場合、ストリーム番号はOutgoing SSN Reset Request Parameterに入れるべきではありません（SHOULD NOT）. 送信者が一部のoutgoing streamのみをリセットすることを要求する場合、これらのストリーム番号をoutgoingSSNリセットrequest parameterに配置する必要があります. 
 
-A5：outgoingSSNリセット要求パラメーターは、R​​E-CONFIGチャンクに配置する必要があります. outgoingSSNリセット要求パラメーターは、incomingSSNリセット要求パラメーターまたはRe-configuration Responseパラメーターのいずれかと一緒に配置できますが、両方と一緒に配置することはできません. セクション3.1で説明されているように、他のパラメーターと組み合わせてはなりません. 
+A5：outgoingSSNリセットrequest parameterは、R​​E-CONFIGチャンクに配置する必要があります. outgoingSSNリセットrequest parameterは、incomingSSNリセットrequest parameterまたはRe-configuration Responseパラメーターのいずれかと一緒に配置できますが、両方と一緒に配置することはできません. セクション3.1で説明されているように、他のパラメーターと組み合わせてはなりません. 
 
 A6：RE-CONFIGチャンクは、セクション5.1.1に記載されているルールに従って送信する必要があります. 
 
-5.1.3. incoming SSNリセット要求パラメーターの送信側の手順
+5.1.3. incoming SSNリセットrequest parameterの送信側の手順
 
-SCTP送信者が一部またはすべてのincoming streamのSSNをリセットする場合、Re-configuration Timerが実行されていなければ、incomingSSNリセット要求パラメーターを送信できます. 次の手順に従う必要があります. 
+SCTP送信者が一部またはすべてのincoming streamのSSNをリセットする場合、Re-configuration Timerが実行されていなければ、incomingSSNリセットrequest parameterを送信できます. 次の手順に従う必要があります. 
 
-B1：送信者は次のre-configuration requestシーケンス番号を割り当てなければならず（MUST）、それをincomingSSNリセット要求パラメーターのre-configuration requestシーケンス番号フィールドに入れなければなりません（MUST）. 割り当てた後、次のre-configuration requestシーケンス番号を1ずつ増加する必要があります. 
+B1：送信者は次のre-configuration requestシーケンス番号を割り当てなければならず（MUST）、それをincomingSSNリセットrequest parameterのre-configuration requestシーケンス番号フィールドに入れなければなりません（MUST）. 割り当てた後、次のre-configuration requestシーケンス番号を1ずつ増加する必要があります. 
 
-B2：送信者がすべてのincoming streamをリセットすることを望む場合、ストリーム番号はincomingSSNリセット要求パラメーターに入れるべきではありません（SHOULD NOT）. 送信者が一部のincoming streamのみをリセットすることを希望する場合、これらのストリーム番号をincomingSSNリセット要求パラメーターに入力する必要があります. 
+B2：送信者がすべてのincoming streamをリセットすることを望む場合、ストリーム番号はincomingSSNリセットrequest parameterに入れるべきではありません（SHOULD NOT）. 送信者が一部のincoming streamのみをリセットすることを希望する場合、これらのストリーム番号をincomingSSNリセットrequest parameterに入力する必要があります. 
 
-B3：incomingSSNリセット要求パラメーターをRE-CONFIGチャンクに配置する必要があります. outgoingSSNリセット要求パラメーターと一緒に配置される場合がありますが、他のパラメーターと一緒に配置してはなりません. 
+B3：incomingSSNリセットrequest parameterをRE-CONFIGチャンクに配置する必要があります. outgoingSSNリセットrequest parameterと一緒に配置される場合がありますが、他のパラメーターと一緒に配置してはなりません. 
 
 B4：セクション5.1.1に記載されているルールに従って、RE-CONFIGチャンクを送信する必要があります. 
 
 incomingSSNリセット要求を送信する場合、ピアがリセットしたばかりか、outgoingSSNリセット要求を介して同じストリームをリセットしている最中である可能性があります. この衝突シナリオについては、セクション5.2.3で説明します. 
 
-5.1.4. SSN / TSNリセット要求パラメーターの送信側の手順
-SCTP送信側がSSNおよびTSNをリセットする場合、Re-configuration Timerが実行されていなければ、SSN / TSNリセット要求パラメーターを送信できます. 次の手順に従う必要があります. 
+5.1.4. SSN / TSNリセットrequest parameterの送信側の手順
+SCTP送信側がSSNおよびTSNをリセットする場合、Re-configuration Timerが実行されていなければ、SSN / TSNリセットrequest parameterを送信できます. 次の手順に従う必要があります. 
 
-C1：送信者は、次のre-configuration requestシーケンス番号を割り当て、SSN / TSNリセット要求パラメーターのre-configuration requestシーケンス番号フィールドに配置する必要があります. 割り当てた後、次のre-configuration requestシーケンス番号を1ずつ増加する必要があります. 
+C1：送信者は、次のre-configuration requestシーケンス番号を割り当て、SSN / TSNリセットrequest parameterのre-configuration requestシーケンス番号フィールドに配置する必要があります. 割り当てた後、次のre-configuration requestシーケンス番号を1ずつ増加する必要があります. 
 
 C2：送信者は未解決のTSNがないか、すべての未解決のTSNを放棄したと見なします. 送信者は、ユーザーデータをキューに入れ、ピアが要求を確認または拒否することによってリセット手順が完了するまで、新しい送信とTSN割り当てを一時停止する必要があります. 
 
-C3：SSN / TSNリセット要求パラメーターをRE-CONFIGチャンクに配置する必要があります. このチャンクには他のパラメーターがあってはなりません. 
+C3：SSN / TSNリセットrequest parameterをRE-CONFIGチャンクに配置する必要があります. このチャンクには他のパラメーターがあってはなりません. 
 
 C4：RE-CONFIGチャンクは、セクション5.1.1に記載されているルールに従って送信する必要があります. 
 
@@ -434,7 +434,7 @@ C4：RE-CONFIGチャンクは、セクション5.1.1に記載されているル�
 
 5.1.5. 送信ストリームの追加リクエストパラメータの送信側の手順
 
-SCTP送信者が送信できる送信ストリームの数を増やしたい場合、SCTP送信者はRE-CONFIGチャンクに送信ストリーム追加要求パラメーターを追加することがあります. リクエストを送信すると、送信者は、このリクエストによって追加された追加のストリームを使用する前に、肯定応答（Success）を待機する必要があります. 新しいストリームは、ギャップなしで前のストリームに隣接して追加されることに注意してください. つまり、すでに5（0-4）の関連付けに2つのストリームを追加する要求が行われた場合、新しいストリームは、正常に完了すると、ストリーム5および6になります. 新しいストリームは、最初のストリームにSSN 0を使用する必要があります. 注文したメッセージ. 
+SCTP送信者が送信できる送信ストリームの数を増やしたい場合、SCTP送信者はRE-CONFIGチャンクに送信ストリーム追加request parameterを追加することがあります. リクエストを送信すると、送信者は、このリクエストによって追加された追加のストリームを使用する前に、肯定応答（Success）を待機する必要があります. 新しいストリームは、ギャップなしで前のストリームに隣接して追加されることに注意してください. つまり、すでに5（0-4）の関連付けに2つのストリームを追加する要求が行われた場合、新しいストリームは、正常に完了すると、ストリーム5および6になります. 新しいストリームは、最初のストリームにSSN 0を使用する必要があります. 注文したメッセージ. 
 
 5.1.6. Add Incoming Streamsリクエストパラメータの送信側の手順
 
@@ -442,7 +442,7 @@ SCTP送信者がピアが送信できるインバウンドストリームの数�
 
 5.1.7. Re-configuration Responseパラメーターの送信側の手順
 
-実装がリセット要求パラメーターを受信すると、次の方法でRe-configuration Responseパラメーターで応答する必要があります. 
+実装がリセットrequest parameterを受信すると、次の方法でRe-configuration Responseパラメーターで応答する必要があります. 
 
 D1：incoming要求のre-configuration requestシーケンス番号は、Re-configuration ResponseパラメーターのRe-configuration Responseシーケンス番号フィールドにコピーする必要があります. 
 
@@ -454,13 +454,13 @@ D4：incoming要求がSSN / TSNリセット要求である場合、受信者の�
 
 5.2. 受信者側の手順
 5.2.1. RE-CONFIGチャンクの受信側の手順
-RE-CONFIGチャンクを受信すると、その中の各パラメーターを処理する必要があります（SHOULD）. 複数のパラメータを返す必要がある場合は、それらを1つのRE_CONFIGチャンクに配置する必要があります. 受信したRE-CONFIGチャンクに少なくとも1つの要求パラメーターが含まれている場合は、選択的確認応答（SACK）チャンクを送信して、RE-CONFIGチャンクにバンドルする必要があります（SHOULD）. 受信したRE-CONFIGチャンクに少なくとも1つの要求が含まれており、re-configuration requestシーケンス番号の分析に基づいてこれが最後に受信したRE-CONFIGチャンク（つまり、再送信）である場合、同じRE-CONFIGチャンクが以前と同じように、返信で返送されました. 
+RE-CONFIGチャンクを受信すると、チャンク内の各パラメータが処理されるべきです（SHOULD）。 複数のパラメータを返さなければならない場合は、それらを1つのRE_CONFIGチャンクに入れなければなりません（MUST）。 受信したRE-CONFIGチャンクに少なくとも1つのリクエストパラメータが含まれている場合、選択的確認応答(SACK)チャンクを送り返すべきであり、RE-CONFIGチャンクと一緒にバンドルしてもかまいません。 受信したRE-CONFIGチャンクに少なくとも1つの要求が含まれており、再設定要求シーケンス番号の分析に基づいて、これが最後に受信したRE-CONFIGチャンクである場合(すなわち、再送)、以前と同じRE-CONFIGチャンクを応答として送り返さなければならない(MUST)。
 
 re-configuration requestを拒否する決定は管理上の決定であり、関連付けが形成された後でもユーザーが構成できる場合があります. 何らかの理由でエンドポイントが受信したリクエストパラメータを処理したくない場合は、セクション5.1.7で説明されているように、適切なResultフィールドとともに、対応するレスポンスパラメータを送信する必要があります. 
 
 実装上の注意：発生する必要のある再送信処理を迅速化できるように、SACKをRe-configuration Responseにバンドルすることをお勧めします. この機能を動作させるためにSACKチャンクは必要ありませんが、データの損失に直面した場合の再構成操作の完了の遅延を最小限に抑えるのに役立ちます. 
 
-5.2.2. outgoingSSNリセット要求パラメーターの受信側の手順
+5.2.2. outgoingSSNリセットrequest parameterの受信側の手順
 
 エンドポイントがストリームリセットを実行する場合は、次の手順に従う必要があります. 
 
@@ -476,11 +476,11 @@ E5：Re-configuration Responseパラメータは、正常な処理を示すRE-CO
 
 E6：RE-CONFIGチャンクは、incomingRE-CONFIGチャンクが完全に処理された後に送信する必要があります. 
 
-5.2.3. incomingSSNリセット要求パラメーターの受信側の手順
+5.2.3. incomingSSNリセットrequest parameterの受信側の手順
 
 エンドポイントがストリームリセットを実行する場合は、次の手順に従う必要があります. 
 
-F1：セクション5.1.2に従って、outgoingSSNリセット要求パラメーターをRE-CONFIGチャンクに配置する必要があります. 
+F1：セクション5.1.2に従って、outgoingSSNリセットrequest parameterをRE-CONFIGチャンクに配置する必要があります. 
 
 F2：incomingRE-CONFIGチャンクが完全に処理された後で、RE-CONFIGチャンクを送信する必要があります. 
 
@@ -494,7 +494,7 @@ o送信されたばかりのOutgoing SSN Reset Request Parameterが受信したI
 
 どちらの競合状態でも、ローカルエンドポイントもオプションでリセットを実行できることに注意してください. これにより、すでにシーケンス0にあるストリームが再び0にリセットされ、アプリケーションに害を及ぼすことはありませんが、ネットワークにメッセージが追加されます. 
 
-5.2.4. SSN / TSNリセット要求パラメーターの受信側の手順
+5.2.4. SSN / TSNリセットrequest parameterの受信側の手順
 エンドポイントがSSN / TSNリセットを実行する用意がある場合は、次の手順に従う必要があります. 
 
 G1：受信者の次のTSNの適切な値を計算します-ピアが次のDATAチャンクを送信するために使用する必要があるTSN. 値は、リクエストの受信者によって確認されていない最小のTSN + 2 ^ 31である必要があります（SHOULD）. 
@@ -517,7 +517,7 @@ SCTPエンドポイントは、追加のストリームを追加するre-configu
 
 5.2.6. Add Incoming Streamsリクエストパラメータの受信側の手順
 
-SCTPエンドポイントは、追加のincoming streamを追加するre-configuration requestを受信すると、セクション5.1.5で指定された規則に従って、要求を拒否する応答パラメーターを送信するか、対応する送信ストリーム追加要求パラメーターを送信する必要があります. SCTPエンドポイントは、ストリームの数がアプリケーションによって構成可能である必要がある制限を超える場合、要求を拒否する必要があります（SHOULD）. 
+SCTPエンドポイントは、追加のincoming streamを追加するre-configuration requestを受信すると、セクション5.1.5で指定された規則に従って、要求を拒否する応答パラメーターを送信するか、対応する送信ストリーム追加request parameterを送信する必要があります. SCTPエンドポイントは、ストリームの数がアプリケーションによって構成可能である必要がある制限を超える場合、要求を拒否する必要があります（SHOULD）. 
 
 5.2.7. Re-configuration Responseパラメーターの受信側の手順
 
@@ -798,9 +798,9 @@ SCTPの「チャンクパラメータタイプ」レジストリに6つの行が
 
    ID値チャンクパラメータタイプリファレンス
    -------- ------------------------------------------ ------ ---------
-   13outgoingSSNリセット要求パラメーター[RFC6525]
-   14incomingSSNリセット要求パラメーター[RFC6525]
-   15 SSN / TSNリセット要求パラメーター[RFC6525]
+   13outgoingSSNリセットrequest parameter[RFC6525]
+   14incomingSSNリセットrequest parameter[RFC6525]
+   15 SSN / TSNリセットrequest parameter[RFC6525]
    16Re-configuration Responseパラメーター[RFC6525]
    17送信ストリームリクエストパラメータの追加[RFC6525]
    18受信ストリームリクエストパラメータの追加[RFC6525]
