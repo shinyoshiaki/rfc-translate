@@ -1411,47 +1411,49 @@ ICMPコード：このフィールドには、ICMPコードの値が含まれま
 
 メッセージごとに、メッセージに含まれる属性とその値が表示されます. 便宜上、値は実際のオクテットではなく、人間が読める形式で表示されます. たとえば、「XOR-RELAYED-ADDRESS = 192.0.2.15：9000」は、XOR-RELAYED-ADDRESS属性がアドレス192.0.2.15およびポート9000に含まれていることを示しています. ここでは、アドレスとポートがxor-ingが実行される前に表示されています. 文字列のような値を持つ属性（たとえば、SOFTWARE = "Example client、version 1.03"およびNONCE = "obMatJos2gAAAadl7W7PeDU4hKE72jda"）の場合、属性の値は読みやすくするために引用符で示されていますが、これらの引用符は実際の値には表示されません. 
 
-   TURN TURNピアピア
-   クライアントサーバーAB
-     | | | |
-     | ---リクエストをAllocationる--------------> | | |
-     | Transaction-Id = 0xA56250D3F17ABE679422DE85 | |
-     | SOFTWARE = "サンプルクライアント、バージョン1.03" | |
-     | LIFETIME = 3600（1時間）| | |
-     | REQUESTED-TRANSPORT = 17（UDP）| | |
-     | DONT-FRAGMENT | | |
-     | | | |
-     | <-エラー応答をAllocationる-------- | | |
-     | Transaction-Id = 0xA56250D3F17ABE679422DE85 | |
-     | SOFTWARE = "Example server、version 1.17" | |
-     | ERROR-CODE = 401（無許可）| | |
-     | REALM = "example.com" | | |
-     | NONCE = "obMatJos2gAAAadl7W7PeDU4hKE72jda" | |
-     | PASSWORD-ALGORITHMS = MD5およびSHA256 | |
-     | | | |
-     | ---リクエストをAllocationる--------------> | | |
-     | Transaction-Id = 0xC271E932AD7446A32C234492 | |
-     | SOFTWARE = "Example client 1.03" | | |
-     | LIFETIME = 3600（1時間）| | |
-     | REQUESTED-TRANSPORT = 17（UDP）| | |
-     | DONT-FRAGMENT | | |
-     | USERNAME = "George" | | |
-     | REALM = "example.com" | | |
-     | NONCE = "obMatJos2gAAAadl7W7PeDU4hKE72jda" | |
-     | PASSWORD-ALGORITHMS = MD5およびSHA256 | |
-     | PASSWORD-ALGORITHM = SHA256 | | |
-     | MESSAGE-INTEGRITY = ... | | |
-     | MESSAGE-INTEGRITY-SHA256 = ... | | |
-     | | | |
-     | <-成功応答をAllocationる------ | | |
-     | Transaction-Id = 0xC271E932AD7446A32C234492 | |
-     | SOFTWARE = "Example server、version 1.17" | |
-     | LIFETIME = 1200（20分）| | |
-     | XOR-RELAYED-ADDRESS = 192.0.2.15：50000 | |
-     | XOR-MAPPED-ADDRESS = 192.0.2.1：7000 | |
-     | MESSAGE-INTEGRITY-SHA256 = ... | | |
-        
-図12
+   TURN                                 TURN          Peer         Peer
+   client                               server         A            B
+     |                                    |            |            |
+     |--- Allocate request -------------->|            |            |
+     |    Transaction-Id=0xA56250D3F17ABE679422DE85    |            |
+     |    SOFTWARE="Example client, version 1.03"      |            |
+     |    LIFETIME=3600 (1 hour)          |            |            |
+     |    REQUESTED-TRANSPORT=17 (UDP)    |            |            |
+     |    DONT-FRAGMENT                   |            |            |
+     |                                    |            |            |
+     |<-- Allocate error response --------|            |            |
+     |    Transaction-Id=0xA56250D3F17ABE679422DE85    |            |
+     |    SOFTWARE="Example server, version 1.17"      |            |
+     |    ERROR-CODE=401 (Unauthorized)   |            |            |
+     |    REALM="example.com"             |            |            |
+     |    NONCE="obMatJos2gAAAadl7W7PeDU4hKE72jda"     |            |
+     |    PASSWORD-ALGORITHMS=MD5 and SHA256           |            |
+     |                                    |            |            |
+     |--- Allocate request -------------->|            |            |
+     |    Transaction-Id=0xC271E932AD7446A32C234492    |            |
+     |    SOFTWARE="Example client 1.03"  |            |            |
+     |    LIFETIME=3600 (1 hour)          |            |            |
+     |    REQUESTED-TRANSPORT=17 (UDP)    |            |            |
+     |    DONT-FRAGMENT                   |            |            |
+     |    USERNAME="George"               |            |            |
+     |    REALM="example.com"             |            |            |
+     |    NONCE="obMatJos2gAAAadl7W7PeDU4hKE72jda"     |            |
+     |    PASSWORD-ALGORITHMS=MD5 and SHA256           |            |
+     |    PASSWORD-ALGORITHM=SHA256       |            |            |
+     |    MESSAGE-INTEGRITY=...           |            |            |
+     |    MESSAGE-INTEGRITY-SHA256=...    |            |            |
+     |                                    |            |            |
+     |<-- Allocate success response ------|            |            |
+     |    Transaction-Id=0xC271E932AD7446A32C234492    |            |
+     |    SOFTWARE="Example server, version 1.17"      |            |
+     |    LIFETIME=1200 (20 minutes)      |            |            |
+     |    XOR-RELAYED-ADDRESS=192.0.2.15:50000         |            |
+     |    XOR-MAPPED-ADDRESS=192.0.2.1:7000            |            |
+     |    MESSAGE-INTEGRITY-SHA256=...    |            |            |
+
+                                 Figure 12
+
+
 
 クライアントは、最初にTURNセッションに使用するホストトランスポートアドレスを選択します. この例では、クライアントは図1に示すように198.51.100.2:49721を選択しています. 次に、クライアントはサーバートランスポートアドレスでサーバーにAllocation要求を送信します. クライアントは、このトランザクションに対して0xA56250D3F17ABE679422DE85の96ビットトランザクションIDをランダムに選択します. これは、固定ヘッダーのトランザクションIDフィールドでエンコードされます. クライアントには、クライアントのソフトウェアに関する情報を提供するSOFTWARE属性が含まれています. ここでは、値は「サンプルクライアント、バージョン1.03」であり、これは「サンプルクライアント」と呼ばれるバージョン1.03であることを示しています. クライアントにはLIFETIME属性が含まれています. これは、Allocationがデフォルトの10分よりも長い有効期間を持つことを望んでいるためです. この属性の値は3600秒です. これは1時間に相当します. クライアントは常にREQUESTED-TRANSPORT属性をAllocateリクエストに含める必要があります. この仕様で許可される唯一の値は17で、サーバーとピア間のUDPトランスポートを示します. 送信指示の後半でDONT-FRAGMENT属性を使用したいため、クライアントにはDONT-FRAGMENT属性も含まれています. この属性は属性ヘッダーのみで構成されます. 価値のある部分はありません. クライアントが最近サーバーと対話していないことを想定しています. したがって、クライアントには、USERNAME、USERHASH、REALM、NONCE、PASSWORD-ALGORITHMS、PASSWORD-ALGORITHM、MESSAGE-INTEGRITY、またはMESSAGE-INTEGRITY-SHA256属性は含まれません. 最後に、メッセージの属性の順序は任意です（MESSAGE-INTEGRITY、MESSAGE-INTEGRITY-SHA256、およびFINGERPRINT属性を除く）. 
 
